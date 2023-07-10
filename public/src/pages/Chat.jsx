@@ -3,42 +3,27 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { allUsersRoute } from "../utils/APIRoutes";
+import Contacts from "../components/Contacts";
 
 export default function Chat() {
     const navigate = useNavigate();
     const [contacts, setContacts] = useState([]);
-    // const [currentChat, setCurrentChat] = useState(undefined);
+    const [currentChat, setCurrentChat] = useState(undefined);
     const [currentUser, setCurrentUser] = useState(undefined);
 
     useEffect(() => {
-        async function fetchData() {
-            if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-                navigate("/login");
-            } else {
-                setCurrentUser(
-                    await JSON.parse(
-                        localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-                    )
-                );
-            }
-        }
-        fetchData();
-    });
-
-
-    useEffect(() => {
-        async function fetchData() {
-            if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-                navigate("/login");
-            } else {
-                setCurrentUser(
-                    await JSON.parse(
-                        localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-                    )
-                );
-            }
-        }
-        fetchData();
+        // async function fetchData() {
+        //     if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+        //         navigate("/login");
+        //     } else {
+        //         setCurrentUser(
+        //             await JSON.parse(
+        //                 localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+        //             )
+        //         );
+        //     }
+        // }
+        // fetchData();
     });
 
     useEffect(() => {
@@ -52,14 +37,19 @@ export default function Chat() {
                 }
             }
         }
-        fetchData(); 
+        fetchData();
     });
 
+    const handleChatChange = (chat) => {
+        setCurrentChat(chat);
+    };
 
     return (
         <>
             <Container>
-                <div className="container"></div>
+                <div className="container">
+                    <Contacts contacts={contacts} currentUser={currentUser} />
+                </div>
             </Container>
         </>
     );
