@@ -36,3 +36,5 @@ Follow the steps below to set up and run the ChatConnect application:
 6. Open `http://localhost:3000` in your web browser.
 
 You should now be able to access the ChatConnect application and start using it to chat with other users.
+
+## Check out some [screenshots of the application here](https://github.com/AdityaNarayan05/ChatConnect/blob/main/PREVIEW.md)
