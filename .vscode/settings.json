@@ -7,6 +7,7 @@
         "getmsg",
         "nlaxmi",
         "recieve",
+        "recieved",
         "setavatar",
         "uuidv"
     ]

@@ -5,55 +5,54 @@ import styled from "styled-components";
 import Picker from "emoji-picker-react";
 
 export default function ChatInput({ handleSendMsg }) {
-    
-    const [msg, setMsg] = useState("");
-    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-    const handleEmojiPickerhideShow = () => {
-        setShowEmojiPicker(!showEmojiPicker);
-    };
+  const [msg, setMsg] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const handleEmojiPickerhideShow = () => {
+    setShowEmojiPicker(!showEmojiPicker);
+  };
 
-    const handleEmojiClick = (event, emojiObject) => {
-        let message = msg;
-        message += emojiObject.emoji;
-        setMsg(message);
-    };
+  const handleEmojiClick = (event, emojiObject) => {
+    let message = msg;
+    message += emojiObject.emoji;
+    setMsg(message);
+  };
 
-    const sendChat = (event) => {
-        event.preventDefault();
-        if (msg.length > 0) {
-            handleSendMsg(msg);
-            setMsg("");
-        }
-    };
+  const sendChat = (event) => {
+    event.preventDefault();
+    if (msg.length > 0) {
+      handleSendMsg(msg);
+      setMsg("");
+    }
+  };
 
-    return (
-        <Container>
-            <div className="button-container">
-                <div className="emoji">
-                    <BsEmojiSmileFill onClick={handleEmojiPickerhideShow} />
-                    {showEmojiPicker && <Picker onEmojiClick={handleEmojiClick} />}
-                </div>
-            </div>
-            <form className="input-container" onSubmit={(event) => sendChat(event)}>
-                <input
-                    type="text"
-                    placeholder="type your message here"
-                    onChange={(e) => setMsg(e.target.value)}
-                    value={msg}
-                />
-                <button type="submit">
-                    <IoMdSend />
-                </button>
-            </form>
-        </Container>
-    );
+  return (
+    <Container>
+      <div className="button-container">
+        <div className="emoji">
+          <BsEmojiSmileFill onClick={handleEmojiPickerhideShow} />
+          {showEmojiPicker && <Picker onEmojiClick={handleEmojiClick} />}
+        </div>
+      </div>
+      <form className="input-container" onSubmit={(event) => sendChat(event)}>
+        <input
+          type="text"
+          placeholder="type your message here"
+          onChange={(e) => setMsg(e.target.value)}
+          value={msg}
+        />
+        <button type="submit">
+          <IoMdSend />
+        </button>
+      </form>
+    </Container>
+  );
 }
 
 const Container = styled.div`
   display: grid;
   align-items: center;
   grid-template-columns: 5% 95%;
-  background-color: #080420;
+  background-color: #123;
   padding: 0 2rem;
   @media screen and (min-width: 720px) and (max-width: 1080px) {
     padding: 0 1rem;
@@ -74,14 +73,14 @@ const Container = styled.div`
       .emoji-picker-react {
         position: absolute;
         top: -350px;
-        background-color: #080420;
-        box-shadow: 0 5px 10px #9a86f3;
-        border-color: #9a86f3;
+        background-color: #000;
+        box-shadow: 0 5px 10px #;
+        border-color: #c72052;
         .emoji-scroll-wrapper::-webkit-scrollbar {
           background-color: #080420;
           width: 5px;
           &-thumb {
-            background-color: #9a86f3;
+            background-color: #f33170;
           }
         }
         .emoji-categories {
@@ -91,10 +90,10 @@ const Container = styled.div`
         }
         .emoji-search {
           background-color: transparent;
-          border-color: #9a86f3;
+          border-color: #9a8;
         }
         .emoji-group:before {
-          background-color: #080420;
+          background-color: #1d1d1d;
         }
       }
     }
@@ -116,7 +115,7 @@ const Container = styled.div`
       font-size: 1.2rem;
 
       &::selection {
-        background-color: #9a86f3;
+        background-color: #c72052;
       }
       &:focus {
         outline: none;
@@ -128,7 +127,7 @@ const Container = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #9a86f3;
+      background-color: #c72052;
       border: none;
       @media screen and (min-width: 720px) and (max-width: 1080px) {
         padding: 0.3rem 1rem;
