@@ -17,23 +17,23 @@ export default function Login() {
     draggable: true,
     theme: "dark",
   };
+
   useEffect(() => {
+    // Redirect to home if user is already logged in
     if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
       navigate("/");
     }
-  }, []);
+  });
 
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
   const validateForm = () => {
+    // Validate form fields
     const { username, password } = values;
-    if (username === "") {
-      toast.error("Email and Password is required.", toastOptions);
-      return false;
-    } else if (password === "") {
-      toast.error("Email and Password is required.", toastOptions);
+    if (username === "" || password === "") {
+      toast.error("Username and Password are required.", toastOptions);
       return false;
     }
     return true;
@@ -47,15 +47,16 @@ export default function Login() {
         username,
         password,
       });
+
       if (data.status === false) {
         toast.error(data.msg, toastOptions);
       }
+
       if (data.status === true) {
         localStorage.setItem(
           process.env.REACT_APP_LOCALHOST_KEY,
           JSON.stringify(data.user)
         );
-
         navigate("/");
       }
     }
@@ -65,14 +66,18 @@ export default function Login() {
     <>
       <FormContainer>
         <form action="" onSubmit={(event) => handleSubmit(event)}>
+          {/* Brand/logo section */}
           <div className="brand">
             <img src={Logo} alt="logo" />
             <h1>ChatConnect</h1>
           </div>
+
+          {/* Input fields */}
           <input
             type="text"
             placeholder="Username"
             name="username"
+            autoComplete="username"
             onChange={(e) => handleChange(e)}
             min="3"
           />
@@ -80,14 +85,21 @@ export default function Login() {
             type="password"
             placeholder="Password"
             name="password"
+            autoComplete="current-password"
             onChange={(e) => handleChange(e)}
           />
+
+          {/* Submit button */}
           <button type="submit">Log In</button>
+
+          {/* Link to register */}
           <span>
             Don't have an account ? <Link to="/register">Create One.</Link>
           </span>
         </form>
       </FormContainer>
+
+      {/* Toast notifications container */}
       <ToastContainer />
     </>
   );
@@ -102,14 +114,17 @@ const FormContainer = styled.div`
   gap: 1rem;
   align-items: center;
   background-color: #cc859a;
+
   .brand {
     display: flex;
     align-items: center;
     gap: 1rem;
     justify-content: center;
+
     img {
       height: 5rem;
     }
+
     h1 {
       color: white;
       text-transform: uppercase;
@@ -124,6 +139,7 @@ const FormContainer = styled.div`
     border-radius: 2rem;
     padding: 5rem;
   }
+
   input {
     background-color: transparent;
     padding: 1rem;
@@ -132,11 +148,13 @@ const FormContainer = styled.div`
     color: white;
     width: 100%;
     font-size: 1rem;
+
     &:focus {
       border: 0.1rem solid #c72052;
       outline: none;
     }
   }
+
   button {
     background-color: #f33170;
     color: white;
@@ -147,12 +165,15 @@ const FormContainer = styled.div`
     border-radius: 0.4rem;
     font-size: 1rem;
     text-transform: uppercase;
+
     &:hover {
       background-color: #c72052;
     }
   }
+
   span {
     color: white;
+
     a {
       color: #4e0eff;
       text-decoration: none;

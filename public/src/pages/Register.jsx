@@ -16,6 +16,7 @@ export default function Register() {
     draggable: true,
     theme: "dark",
   };
+
   const [values, setValues] = useState({
     username: "",
     email: "",
@@ -24,28 +25,27 @@ export default function Register() {
   });
 
   useEffect(() => {
+    // Redirect to home if user is already logged in
     if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
       navigate("/");
     }
-  }, []);
+  });
 
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
   const handleValidation = () => {
+    // Validate form fields
     const { password, confirmPassword, username, email } = values;
     if (password !== confirmPassword) {
       toast.error(
-        "Password and confirm password should be same.",
+        "Password and confirm password should be the same.",
         toastOptions
       );
       return false;
     } else if (username.length < 3) {
-      toast.error(
-        "Username should be greater than 3 characters.",
-        toastOptions
-      );
+      toast.error("Username should be greater than 3 characters.", toastOptions);
       return false;
     } else if (password.length < 8) {
       toast.error(
@@ -88,40 +88,53 @@ export default function Register() {
     <>
       <FormContainer>
         <form action="" onSubmit={(event) => handleSubmit(event)}>
+          {/* Brand/logo section */}
           <div className="brand">
             <img src={Logo} alt="logo" />
             <h1>ChatConnect</h1>
           </div>
+
+          {/* Input fields */}
           <input
             type="text"
             placeholder="Username"
             name="username"
+            autoComplete="username"
             onChange={(e) => handleChange(e)}
           />
           <input
             type="email"
             placeholder="Email"
             name="email"
+            autoComplete="email"
             onChange={(e) => handleChange(e)}
           />
           <input
             type="password"
             placeholder="Password"
             name="password"
+            autoComplete="new-password"
             onChange={(e) => handleChange(e)}
           />
           <input
             type="password"
             placeholder="Confirm Password"
             name="confirmPassword"
+            autoComplete="new-password"
             onChange={(e) => handleChange(e)}
           />
+
+          {/* Submit button */}
           <button type="submit">Create User</button>
+
+          {/* Link to login */}
           <span>
             Already have an account ? <Link to="/login">Login.</Link>
           </span>
         </form>
       </FormContainer>
+
+      {/* Toast notifications container */}
       <ToastContainer />
     </>
   );
@@ -136,14 +149,17 @@ const FormContainer = styled.div`
   gap: 1rem;
   align-items: center;
   background-color: #cc859a;
+
   .brand {
     display: flex;
     align-items: center;
     gap: 1rem;
     justify-content: center;
+
     img {
       height: 5rem;
     }
+
     h1 {
       color: white;
       text-transform: uppercase;
@@ -158,6 +174,7 @@ const FormContainer = styled.div`
     border-radius: 2rem;
     padding: 3rem 5rem;
   }
+
   input {
     background-color: transparent;
     padding: 1rem;
@@ -166,11 +183,13 @@ const FormContainer = styled.div`
     color: white;
     width: 100%;
     font-size: 1rem;
+
     &:focus {
       border: 0.1rem solid #c72052;
       outline: none;
     }
   }
+
   button {
     background-color: #f33170;
     color: white;
@@ -181,12 +200,15 @@ const FormContainer = styled.div`
     border-radius: 0.4rem;
     font-size: 1rem;
     text-transform: uppercase;
+
     &:hover {
       background-color: #c72052;
     }
   }
+
   span {
     color: white;
+
     a {
       color: #4e0eff;
       text-decoration: none;

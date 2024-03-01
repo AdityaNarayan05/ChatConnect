@@ -1,22 +1,31 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Robot from "../assets/robot.gif";
+
 export default function Welcome() {
   const [userName, setUserName] = useState("");
-  useEffect(async () => {
-    setUserName(
-      await JSON.parse(
-        localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-      ).username
-    );
-  }, []);
+
+  useEffect(() => {
+    async function getUserData() {
+      const storedData = localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY);
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        if (parsedData && parsedData.username) {
+          setUserName(parsedData.username);
+        }
+      }
+    }
+
+    getUserData();
+  }, []); // Empty dependency array ensures useEffect runs only once (on mount)
+
   return (
     <Container>
       <img src={Robot} alt="" />
       <h1>
-        Welcome, <span>{userName} !</span>
+        Welcome, <span>{userName}!</span>
       </h1>
-      <h3>Please select a chat to Start messaging.</h3>
+      <h3>Please select a chat to start messaging.</h3>
     </Container>
   );
 }

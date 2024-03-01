@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { Buffer } from "buffer";
-import loader from "../assets/loader.gif";
+import loader from "../assets/Loader.gif";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { setAvatarRoute } from "../utils/APIRoutes";
+
 export default function SetAvatar() {
+  // API URL for avatar images
   const api = `https://api.multiavatar.com/4645646`;
   const navigate = useNavigate();
   const [avatars, setAvatars] = useState([]);
@@ -21,10 +23,14 @@ export default function SetAvatar() {
     theme: "dark",
   };
 
-  useEffect(async () => {
-    if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
-      navigate("/login");
-  }, []);
+  useEffect(() => {
+    // Check if user is logged in, else navigate to login
+    async function fetchData() {
+      if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+        navigate("/login");
+    }
+    fetchData();
+  }, [navigate]);
 
   const setProfilePicture = async () => {
     if (selectedAvatar === undefined) {
@@ -34,17 +40,20 @@ export default function SetAvatar() {
         localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
       );
 
+      // Send a request to set the avatar for the user
       const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
         image: avatars[selectedAvatar],
       });
 
       if (data.isSet) {
+        // Update user's avatar information in localStorage upon successful update
         user.isAvatarImageSet = true;
         user.avatarImage = data.image;
         localStorage.setItem(
           process.env.REACT_APP_LOCALHOST_KEY,
           JSON.stringify(user)
         );
+        // Navigate to the home page after updating the avatar
         navigate("/");
       } else {
         toast.error("Error setting avatar. Please try again.", toastOptions);
@@ -52,18 +61,23 @@ export default function SetAvatar() {
     }
   };
 
-  useEffect(async () => {
-    const data = [];
-    for (let i = 0; i < 4; i++) {
-      const image = await axios.get(
-        `${api}/${Math.round(Math.random() * 1000)}`
-      );
-      const buffer = new Buffer(image.data);
-      data.push(buffer.toString("base64"));
+  useEffect(() => {
+    // Fetch avatar images from the external API
+    async function getImages() {
+      const data = [];
+      for (let i = 0; i < 4; i++) {
+        const image = await axios.get(
+          `${api}/${Math.round(Math.random() * 1000)}`
+        );
+        const buffer = new Buffer(image.data);
+        data.push(buffer.toString("base64"));
+      }
+      setAvatars(data);
+      setIsLoading(false);
     }
-    setAvatars(data);
-    setIsLoading(false);
-  }, []);
+    getImages();
+  }, [api]);
+
   return (
     <>
       {isLoading ? (
@@ -78,15 +92,10 @@ export default function SetAvatar() {
           <div className="avatars">
             {avatars.map((avatar, index) => {
               return (
-                <div
-                  className={`avatar ${
-                    selectedAvatar === index ? "selected" : ""
-                  }`}
-                >
+                <div className={`avatar ${selectedAvatar === index ? "selected" : ""}`} key={avatar}>
                   <img
                     src={`data:image/svg+xml;base64,${avatar}`}
                     alt="avatar"
-                    key={avatar}
                     onClick={() => setSelectedAvatar(index)}
                   />
                 </div>
@@ -109,7 +118,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   gap: 3rem;
-  background-color: #cc859a;
+  background-color:rgb(0, 0, 0);;
   height: 100vh;
   width: 100vw;
 
@@ -122,6 +131,7 @@ const Container = styled.div`
       color: white;
     }
   }
+
   .avatars {
     display: flex;
     gap: 2rem;
@@ -134,15 +144,18 @@ const Container = styled.div`
       justify-content: center;
       align-items: center;
       transition: 0.5s ease-in-out;
+
       img {
         height: 6rem;
         transition: 0.5s ease-in-out;
       }
     }
+
     .selected {
       border: 0.4rem solid #f33170;
     }
   }
+
   .submit-btn {
     background-color: #f33170;
     color: white;
@@ -153,6 +166,7 @@ const Container = styled.div`
     border-radius: 0.4rem;
     font-size: 1rem;
     text-transform: uppercase;
+
     &:hover {
       background-color: #c72052;
     }
