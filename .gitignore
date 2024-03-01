@@ -11,6 +11,10 @@ node_modules
 
 # production
 /build
+.env
+public/.env
+server/.env
+public/build
 
 # misc
 .DS_Store
